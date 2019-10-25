@@ -18,6 +18,8 @@ public class CCamera : MonoBehaviour
     float CameraSpeed = 0.5f;
     
     CMVIEW CAMERAVIEW = CMVIEW.TOP;
+
+    public bool IsCameraMove = false;
     void Start()
     {
         TopVec.x = -3;
@@ -56,6 +58,7 @@ public class CCamera : MonoBehaviour
     {
         this.transform.LookAt(LookPos.transform.position);
 
+      
     }
 
     public void CameraSwitch()
@@ -65,22 +68,38 @@ public class CCamera : MonoBehaviour
         switch (CAMERAVIEW)
         {
             case CMVIEW.SIDE:
+                CameraMoveTypeChange();
                 //this.transform.DOLocalRotate(SideRot, CameraSpeed, RotateMode.FastBeyond360);
                 this.transform.SetParent(SideObject.transform);
                 this.transform.DOMove(SideVec, CameraSpeed, false);
+                Invoke("CameraMoveTypeChange", 0.4f);
                 
+           
 
                 break;
 
             case CMVIEW.TOP:
+                CameraMoveTypeChange();
                 //this.transform.DOLocalRotate(TopRot, CameraSpeed, RotateMode.FastBeyond360);
                 this.transform.SetParent(mPlayer.transform);
-
                 this.transform.DOMove(mPlayer.transform.position + TopVec, CameraSpeed, false);
-        
+                Invoke("CameraMoveTypeChange", 0.4f);
 
                 break;
         }
 
+    }
+
+
+    void CameraMoveTypeChange()
+    {
+        if (IsCameraMove == true)
+        {
+            IsCameraMove = false;
+        }
+        else
+        {
+            IsCameraMove = true;
+        }
     }
 }
